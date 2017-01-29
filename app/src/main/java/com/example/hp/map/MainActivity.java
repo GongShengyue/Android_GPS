@@ -1,8 +1,10 @@
 package com.example.hp.map;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,11 +31,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         positionText = (TextView) findViewById(R.id.position_text_view);
         List<String> permissionList=new ArrayList<>();
-        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION))
-            !=PackageManager.PERMISSION_GRANTED){
-            permissionList.add(Manifest.permisson.ACCESS_FINE_lOCATION);
+        if (ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+            !=PackageManager.PERMISSION_GRANTED) {
+            permissionList.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
         }
-    }
+        if (ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.READ_PHONE_STATE)
+            !=PackageManager.PERMISSION_GRANTED) {
+            permissionList.add(android.Manifest.permission.READ_PHONE_STATE);
+        }
+        if (ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                !=PackageManager.PERMISSION_GRANTED) {
+            permissionList.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (!permissionList.isEmpty()) {
+            String  [] permissons=permissionList.toArray(new String[permissionList.size()]);
+            ActivityCompat.requestPermissions(MainActivity.this,permissons,1);
+        }else {
+            requestLocation();
+        }
+
+        }
+
 
 
     private void requestLocation(){
@@ -41,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
+//    @Override
     public void onRequestPermissonResult(int requestCode, String[] permissons,int[] grantResults){
         switch (requestCode){
             case 1:
